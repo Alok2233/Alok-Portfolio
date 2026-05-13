@@ -118,7 +118,7 @@ export const HeroSection = () => {
                 asChild
               >
                 <Button variant="heroOutline" size="lg" asChild>
-  <a href="/Alok-Resume.pdf" download>
+  <a href="/document/resume.pdf" download="resume.pdf">
     <Download className="w-5 h-5" />
     Download CV
   </a>
@@ -142,15 +142,15 @@ export const HeroSection = () => {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10"
+              className="relative z-10 w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 flex items-center justify-center"
             >
               {/* Rotating ring */}
-              <div className="absolute inset-0 w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full border-2 border-dashed border-primary/30 animate-spin-slow" />
+              <div className="absolute inset-0 rounded-full border-2 border-dashed border-primary/30 animate-spin-slow" />
               
               {/* Inner glow */}
-              <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full glass flex items-center justify-center shadow-glow-lg">
-                <div className="w-40 h-40 sm:w-52 sm:h-52 lg:w-60 lg:h-60 rounded-full bg-gradient-to-br from-primary/30 via-secondary/20 to-transparent flex items-center justify-center">
-                  <span className="text-6xl sm:text-7xl lg:text-8xl font-bold text-gradient">AD</span>
+              <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full glass flex items-center justify-center shadow-glow-lg relative z-10 p-2 sm:p-3">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-primary/30 via-secondary/20 to-transparent flex items-center justify-center overflow-hidden">
+                  <img src="/document/profile.jpg" alt="Alok Dalke Profile" className="w-full h-full object-cover object-top" />
                 </div>
               </div>
             </motion.div>
