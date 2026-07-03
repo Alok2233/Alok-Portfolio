@@ -10,6 +10,7 @@ export const ContactSection = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,14 +20,54 @@ export const ContactSection = () => {
 
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch(
+      "https://alokdalke.app.n8n.cloud/webhook-test/5b210678-3b3b-4f85-bf6f-a764e4afd456",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          submittedAt: new Date().toISOString(),
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to send message");
+    }
+
     toast({
       title: "Message Sent!",
       description: "Thanks for reaching out. I'll get back to you soon!",
     });
-    setFormData({ name: '', email: '', message: '' });
-  };
+
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
+  } catch (error) {
+    console.error(error);
+
+    toast({
+      title: "Something went wrong",
+      description: "Please try again later.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const contactInfo = [
     { icon: Mail, label: 'Email', value: 'alokdalke6@gmail.com', href: 'mailto:alokdalke6@gmail.com' },
@@ -138,14 +179,16 @@ export const ContactSection = () => {
                   />
                 </motion.div>
 
-                {/* Submit Button */}
-                <Button type="submit" variant="hero" size="lg" className="w-full">
-                  Send Message
-                  <Send className="w-5 h-5" />
-                </Button>
-              </div>
-            </form>
-          </motion.div>
+          <Button
+  type="submit"
+  variant="hero"
+  size="lg"
+  className="w-full"
+  disabled={isSubmitting}
+>
+  {isSubmitting ? "Sending..." : "Send Message"}
+  <Send className="w-5 h-5" />
+</Button>
 
           {/* Contact Info */}
           <motion.div
