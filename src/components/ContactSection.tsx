@@ -21,53 +21,53 @@ export const ContactSection = () => {
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
-  try {
-    const response = await fetch(
-      "https://alokdalke.app.n8n.cloud/webhook-test/5b210678-3b3b-4f85-bf6f-a764e4afd456",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          submittedAt: new Date().toISOString(),
-        }),
+    try {
+      const response = await fetch(
+        "https://alokdalke.app.n8n.cloud/webhook-test/5b210678-3b3b-4f85-bf6f-a764e4afd456",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+            submittedAt: new Date().toISOString(),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
       }
-    );
 
-    if (!response.ok) {
-      throw new Error("Failed to send message");
+      toast({
+        title: "Message Sent!",
+        description: "Thanks for reaching out. I'll get back to you soon!",
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. I'll get back to you soon!",
-    });
-
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
-  } catch (error) {
-    console.error(error);
-
-    toast({
-      title: "Something went wrong",
-      description: "Please try again later.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   const contactInfo = [
     { icon: Mail, label: 'Email', value: 'alokdalke6@gmail.com', href: 'mailto:alokdalke6@gmail.com' },
@@ -109,7 +109,7 @@ export const ContactSection = () => {
               <div className="space-y-6">
                 {/* Name Input */}
                 <motion.div
-                  animate={{ 
+                  animate={{
                     y: focusedField === 'name' ? -5 : 0,
                   }}
                   className="relative"
@@ -123,8 +123,8 @@ export const ContactSection = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     className={`w-full bg-input border rounded-xl px-4 py-4 text-foreground placeholder-muted-foreground focus:outline-none transition-all duration-300 ${
-                      focusedField === 'name' 
-                        ? 'border-primary shadow-glow' 
+                      focusedField === 'name'
+                        ? 'border-primary shadow-glow'
                         : 'border-border hover:border-primary/50'
                     }`}
                     placeholder="Your Name"
@@ -133,7 +133,7 @@ export const ContactSection = () => {
 
                 {/* Email Input */}
                 <motion.div
-                  animate={{ 
+                  animate={{
                     y: focusedField === 'email' ? -5 : 0,
                   }}
                   className="relative"
@@ -147,8 +147,8 @@ export const ContactSection = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     className={`w-full bg-input border rounded-xl px-4 py-4 text-foreground placeholder-muted-foreground focus:outline-none transition-all duration-300 ${
-                      focusedField === 'email' 
-                        ? 'border-primary shadow-glow' 
+                      focusedField === 'email'
+                        ? 'border-primary shadow-glow'
                         : 'border-border hover:border-primary/50'
                     }`}
                     placeholder="Your Email"
@@ -157,7 +157,7 @@ export const ContactSection = () => {
 
                 {/* Message Textarea */}
                 <motion.div
-                  animate={{ 
+                  animate={{
                     y: focusedField === 'message' ? -5 : 0,
                   }}
                   className="relative"
@@ -171,24 +171,27 @@ export const ContactSection = () => {
                     required
                     rows={5}
                     className={`w-full bg-input border rounded-xl px-4 py-4 text-foreground placeholder-muted-foreground focus:outline-none transition-all duration-300 resize-none ${
-                      focusedField === 'message' 
-                        ? 'border-primary shadow-glow' 
+                      focusedField === 'message'
+                        ? 'border-primary shadow-glow'
                         : 'border-border hover:border-primary/50'
                     }`}
                     placeholder="Your Message"
                   />
                 </motion.div>
 
-          <Button
-  type="submit"
-  variant="hero"
-  size="lg"
-  className="w-full"
-  disabled={isSubmitting}
->
-  {isSubmitting ? "Sending..." : "Send Message"}
-  <Send className="w-5 h-5" />
-</Button>
+                <Button
+                  type="submit"
+                  variant="hero"
+                  size="lg"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                  <Send className="w-5 h-5" />
+                </Button>
+              </div>
+            </form>
+          </motion.div>
 
           {/* Contact Info */}
           <motion.div
